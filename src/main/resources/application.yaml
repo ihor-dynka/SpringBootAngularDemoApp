@@ -4,10 +4,12 @@ spring:
     username: app_user
     password: P@ssw0rd
     driverClassName: com.mysql.jdbc.Driver
+
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
   sql:
     init:
-      mode: never
+      mode: always
+      continue-on-error: true
