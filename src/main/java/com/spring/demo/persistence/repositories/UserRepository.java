@@ -1,18 +1,17 @@
 package com.spring.demo.persistence.repositories;
 
-import com.spring.demo.enums.Role;
-import com.spring.demo.persistence.model.UsersEntity;
+import com.spring.demo.persistence.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UsersEntity, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-	Optional<UsersEntity> findByUsername(String username);
-	Optional<UsersEntity> findByFirstnameAndLastname(String firstName, String lastName);
-	List<UsersEntity> findAllByRole_RoleName(Role roleName);
+	Optional<UserEntity> findByUsername(String username);
+	Optional<UserEntity> findByFirstnameAndLastname(String firstName, String lastName);
+	List<UserEntity> findAllByRole_RoleName(String roleName);
 
-	void deleteUsersEntityByUserId(Integer userId);
+	void deleteUserEntityByUserId(Integer userId);
 	void deleteUsersEntityByUsername(String username);
 }

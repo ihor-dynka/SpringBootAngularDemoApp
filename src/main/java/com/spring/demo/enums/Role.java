@@ -9,11 +9,14 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public enum Role {
 
-	ADMIN("admin"),
-	USER("user"),
-	GUEST("guest");
+	ADMIN(1, "admin", "Administrator"),
+	USER(2, "user", "User"),
+	GUEST(3, "guest", "Guest"),
+	TEST_USER(4, "test_user", "Test user");
 
+	private int id;
 	private String name;
+	private String description;
 
 	public static Role getRoleByName(String name) {
 		return Stream.of(Role.values())

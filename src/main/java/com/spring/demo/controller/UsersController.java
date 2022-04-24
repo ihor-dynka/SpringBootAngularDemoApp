@@ -1,30 +1,55 @@
 package com.spring.demo.controller;
 
+import com.spring.demo.dto.UserDto;
 import com.spring.demo.enums.Role;
-import com.spring.demo.models.User;
 import com.spring.demo.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
-@RequestMapping("/v1/api/user")
+@RequestMapping("/v1/api/users")
 public class UsersController {
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
-	@GetMapping("/{userId}")
-	public User getUserById(@PathVariable int userId){
+	@Autowired
+	public UsersController(UserService userService) {
+		this.userService = userService;
+	}
+
+	@Operation(summary = "Get user details by its ID")
+	@GetMapping(value = "/{userId}", consumes = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public UserDto getUserById(@PathVariable int userId) {
 		return userService.getUserById(userId);
 	}
 
+	@GetMapping()
+	@ResponseStatus(HttpStatus.OK)
+	public List<UserDto> getAllUsers() {
+		return userService.getAllUsers();
+	}
+
 	@GetMapping("/role/{role}")
-	public List<User> getUsersByRole(@PathVariable String role){
-		return userService.getUsersByRole(Role.getRoleByName(role));
+	@ResponseStatus(HttpStatus.OK)
+	public List<UserDto> getUsersByRole(@PathVariable String role) {
+//		return userService.getUsersByRole(Role.getRoleByName(role));
+		return null;
+	}
+
+	@PutMapping("{userId}")
+	public void updateUser(@RequestBody UserDto userDto, @PathVariable int userId) {
+	}
+
+	@DeleteMapping("/{userId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void createNewUser(@PathVariable int userId) {
+		userService.deleteUserById(userId);
 	}
 }

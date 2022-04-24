@@ -1,10 +1,12 @@
 package com.spring.demo.services;
 
+import com.spring.demo.dto.UserDto;
 import com.spring.demo.enums.Role;
-import com.spring.demo.models.User;
-import com.spring.demo.persistence.model.UsersEntity;
+import com.spring.demo.exceptions.UserNotFoundException;
+import com.spring.demo.persistence.entities.UserEntity;
 import com.spring.demo.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,25 +19,37 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User getUserById(int id) {
-		Optional<UsersEntity> userEntity = userRepository.findById(id);
-		return convertToUserDto(userEntity);
+	@Cacheable("users")
+	public List<UserDto> getAllUsers() {
+		return userRepository.findAll()
+			.stream()
+			.map(UserMapper::convertToUserDto)
+			.collect(Collectors.toList());
 	}
 
-	public List<User> getUsersByRole(Role role) {
-		List<UsersEntity> usersEntities = userRepository.findAllByRole_RoleName(role);
-		return usersEntities.stream().map(usersEntity -> convertToUserDto(Optional.ofNullable(usersEntity))).collect(Collectors.toList());
+	@Cacheable("users")
+	public UserDto getUserById(int id) {
+		Optional<UserEntity> userEntity = userRepository.findById(id);
+		return UserMapper.convertToUserDto(userEntity.orElseThrow(() -> new UserNotFoundException(id)));
 	}
 
-	private User convertToUserDto(Optional<UsersEntity> userEntity) {
-		return new User(
-			userEntity.get().getUserId(),
-			userEntity.get().getRole().getRoleName(),
-			userEntity.get().getUsername(),
-			userEntity.get().getPassword(),
-			userEntity.get().getFirstname(),
-			userEntity.get().getLastname(),
-			userEntity.get().getSecurityQuestion(),
-			userEntity.get().getSecurityAnswer());
+	@Cacheable("users")
+	public List<UserDto> getUsersByRole(Role role) {
+		List<UserEntity> usersEntities = userRepository.findAllByRole_RoleName(role.getName());
+		return usersEntities.stream().map(UserMapper::convertToUserDto).collect(Collectors.toList());
+	}
+
+	public UserDto createNewUser(UserDto userDto) {
+		UserEntity userEntity = UserMapper.convertToUserEntity(userDto);
+		userRepository.saveAndFlush(userEntity);
+		return UserMapper.convertToUserDto(userEntity);
+	}
+
+	public void deleteUserById(int userId) {
+		userRepository.deleteUserEntityByUserId(userId);
+	}
+
+	public void deleteUserByUsername(String userName) {
+		userRepository.deleteUsersEntityByUsername(userName);
 	}
 }
