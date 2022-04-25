@@ -1,4 +1,4 @@
-package com.spring.demo.service;
+package com.spring.demo.unit_tests.service;
 
 import com.spring.demo.dto.UserDto;
 import com.spring.demo.enums.Role;

@@ -1,5 +1,5 @@
 ###Build Docker Image
-- `gradle bootBuildImage --imageName=spring-boot-docker:latest`
+- `gradle clean build bootBuildImage --imageName=spring-boot-docker:latest`
 
 ###Start App with DB in Docker containers
 - `docker-compose up`

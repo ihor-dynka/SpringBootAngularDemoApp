@@ -16,12 +16,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/v1/api/users")
 public class UsersController {
 
-	private final UserService userService;
-
 	@Autowired
-	public UsersController(UserService userService) {
-		this.userService = userService;
-	}
+	private UserService userService;
 
 	@Operation(summary = "Get user details by its ID")
 	@GetMapping(value = "/{userId}", consumes = APPLICATION_JSON_VALUE)
@@ -39,8 +35,7 @@ public class UsersController {
 	@GetMapping("/role/{role}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<UserDto> getUsersByRole(@PathVariable String role) {
-//		return userService.getUsersByRole(Role.getRoleByName(role));
-		return null;
+		return userService.getUsersByRole(Role.getRoleByName(role));
 	}
 
 	@PutMapping("{userId}")
