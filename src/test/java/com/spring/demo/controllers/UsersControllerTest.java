@@ -1,4 +1,4 @@
-package com.spring.demo.unit_tests.controllers;
+package com.spring.demo.controllers;
 
 import com.spring.demo.dto.UserDto;
 import com.spring.demo.enums.Role;

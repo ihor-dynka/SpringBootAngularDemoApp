@@ -4,16 +4,17 @@ services:
     image: spring-boot-docker:latest
     build:
       context: .
+      dockerfile: Dockerfile
     container_name: spring_boot_app
     restart: always
     environment:
-      SPRING_PROFILE_ACTIVE: 'default'
-      SPRING_DATASOURCE_URL: 'jdbc:mysql://db:3306/app_db'
-      SPRING_DATASOURCE_USERNAME: 'app_user'
-      SPRING_DATASOURCE_PASSWORD: 'P@ssw0rd'
-      SPRING_JPA_DATABASE_PLATFORM: 'org.hibernate.dialect.MySQLDialect'
-      SPRING_JPA_HIBERNATE_DDL_AUTO: 'none'
-      SPRING_SQL_INIT_MODE: 'always'
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/app_db
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: P@ssw0rd
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_SQL_INIT_MODE: always
       SPRING_SQL_INIT_CONTINUE_ON_ERROR: 'true'
 
     ports:
@@ -24,18 +25,35 @@ services:
       - db
     links:
       - db
+    networks:
+      - my-network
 
   db:
     image: mysql:8.0.28
     container_name: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: 'app_db'
-      MYSQL_USER: 'app_user'
-      MYSQL_PASSWORD: 'P@ssw0rd'
-      MYSQL_ROOT_PASSWORD: 'P@ssw0rd'
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: P@ssw0rd
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
 
+    command: --init-file /data/application/init.sql
+
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
     volumes:
       - mysql:/var/lib/mysql
+      - ./src/main/resources/init.sql:/data/application/init.sql
+
+    networks:
+      - my-network
+
 volumes:
   mysql:
+
+networks:
+  my-network:
+    driver: bridge

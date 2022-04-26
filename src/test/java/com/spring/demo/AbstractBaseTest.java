@@ -1,4 +1,4 @@
-package com.spring.demo.unit_tests;
+package com.spring.demo;
 
 public abstract class AbstractBaseTest {
 }

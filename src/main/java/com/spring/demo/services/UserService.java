@@ -21,7 +21,8 @@ public class UserService {
 
 	@Cacheable("users")
 	public List<UserDto> getAllUsers() {
-		return userRepository.findAll()
+		List<UserEntity> all = userRepository.findAll();
+		return all
 			.stream()
 			.map(UserMapper::convertToUserDto)
 			.collect(Collectors.toList());

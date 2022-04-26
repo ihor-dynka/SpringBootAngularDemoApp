@@ -1,14 +1,14 @@
 spring:
   profiles:
-    active: test
+    active: default
   datasource:
-    url: jdbc:mysql://localhost:3306/app_db
+    url: jdbc:h2:mem:app_db
     username: app_user
     password: P@ssw0rd
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: org.h2.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
   sql:

@@ -1,6 +1,6 @@
-package com.spring.demo.unit_tests.repository;
+package com.spring.demo.repository;
 
-import com.spring.demo.unit_tests.AbstractBaseTest;
+import com.spring.demo.AbstractBaseTest;
 import com.spring.demo.enums.Role;
 import com.spring.demo.persistence.entities.UserEntity;
 import com.spring.demo.persistence.repositories.UserRepository;

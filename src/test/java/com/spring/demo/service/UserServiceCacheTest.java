@@ -1,4 +1,4 @@
-package com.spring.demo.unit_tests.service;
+package com.spring.demo.service;
 
 import com.spring.demo.enums.Role;
 import com.spring.demo.persistence.repositories.UserRepository;
