@@ -13,5 +13,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 	List<UserEntity> findAllByRole_RoleName(String roleName);
 
 	void deleteUserEntityByUserId(Integer userId);
-	void deleteUsersEntityByUsername(String username);
 }

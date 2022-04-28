@@ -8,11 +8,11 @@ public class UserEntitiesFactory {
 	public static UserEntity getAdminUserEntity() {
 		return new UserEntity(
 			Role.ADMIN,
-			"test",
+			"test_admin_username",
 			"P@ssw0rd",
-			"test@gmail.com",
-			"test",
-			"test",
+			"test_admin_user@gmail.com",
+			"test_admin_firstname",
+			"test_admin_user_lastname",
 			"test",
 			"test");
 	}
@@ -20,11 +20,11 @@ public class UserEntitiesFactory {
 	public static UserEntity getGuestUserEntity() {
 		return new UserEntity(
 			Role.GUEST,
-			"test",
+			"test_guest_username",
 			"P@ssw0rd",
-			"test@gmail.com",
-			"test",
-			"test",
+			"test_guest@gmail.com",
+			"test_guest_firstname",
+			"test_guest_lastname",
 			"test",
 			"test");
 	}
@@ -32,11 +32,11 @@ public class UserEntitiesFactory {
 	public static UserEntity getUserUserEntity() {
 		return new UserEntity(
 			Role.GUEST,
-			"test",
+			"test_user_username",
 			"P@ssw0rd",
-			"test@gmail.com",
-			"test",
-			"test",
+			"test_user@gmail.com",
+			"test_user_firstname",
+			"test_user_lastname",
 			"test",
 			"test");
 	}

@@ -2,6 +2,7 @@ package com.spring.demo.persistence.entities;
 
 import com.spring.demo.enums.Role;
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,6 +51,18 @@ public class UserEntity {
 
 	@Column(name = "security_answer", nullable = false)
 	private String securityAnswer;
+
+	public UserEntity(int userId, Role role, String username, String password, String email, String firstname, String lastname, String securityQuestion, String securityAnswer) {
+		this.userId = userId;
+		this.role = new RoleEntity(role.getId(), role.getName(), role.getDescription());
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.securityQuestion = securityQuestion;
+		this.securityAnswer = securityAnswer;
+	}
 
 	public UserEntity(Role role, String username, String password, String email, String firstname, String lastname, String securityQuestion, String securityAnswer) {
 		this.role = new RoleEntity(role.getId(), role.getName(), role.getDescription());

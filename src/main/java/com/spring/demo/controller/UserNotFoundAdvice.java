@@ -1,5 +1,6 @@
 package com.spring.demo.controller;
 
+import com.spring.demo.exceptions.UserAlreadyExistsException;
 import com.spring.demo.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +14,14 @@ public class UserNotFoundAdvice {
 	@ResponseBody
 	@ExceptionHandler(UserNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String employeeNotFoundHandler(UserNotFoundException ex) {
-		return ex.getMessage();
+	String userNotFoundHandler(UserNotFoundException exception) {
+		return exception.getMessage();
+	}
+
+	@ResponseBody
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	String userAlreadyExistsHandler(UserAlreadyExistsException exception) {
+		return exception.getMessage();
 	}
 }

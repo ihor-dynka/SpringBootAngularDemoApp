@@ -1,4 +1,4 @@
-package com.spring.demo.repository;
+package com.spring.demo.unit_test.repository;
 
 import com.spring.demo.AbstractBaseTest;
 import com.spring.demo.enums.Role;
@@ -21,7 +21,7 @@ public class RolesRepositoryTest extends AbstractBaseTest {
 
 	@Test
 	void testSaveRole() {
-			var role = testEntityManager.persistAndFlush(new RoleEntity(Role.TEST_USER));
+		var role = testEntityManager.persistAndFlush(new RoleEntity(Role.TEST_USER));
 
 		Assertions.assertThat(rolesRepository.existsById(role.getRoleId())).isTrue();
 	}
@@ -35,7 +35,7 @@ public class RolesRepositoryTest extends AbstractBaseTest {
 	}
 
 	@Test
-	void findAllRoles() {
+	void testFindAllRoles() {
 		var roleEntityList = rolesRepository.findAll();
 		var testUserRole = testEntityManager.persistAndFlush(new RoleEntity(Role.TEST_USER));
 

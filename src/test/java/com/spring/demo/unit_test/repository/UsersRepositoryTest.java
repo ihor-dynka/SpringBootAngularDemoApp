@@ -1,12 +1,13 @@
-package com.spring.demo.repository;
+package com.spring.demo.unit_test.repository;
 
 import com.spring.demo.AbstractBaseTest;
 import com.spring.demo.enums.Role;
+import com.spring.demo.exceptions.UserNotFoundException;
+import com.spring.demo.persistence.entities.RoleEntity;
 import com.spring.demo.persistence.entities.UserEntity;
 import com.spring.demo.persistence.repositories.UserRepository;
 import com.spring.demo.test_data.UserEntitiesFactory;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -23,22 +24,15 @@ class UsersRepositoryTest extends AbstractBaseTest {
 	@Autowired
 	private TestEntityManager testEntityManager;
 
+	private UserEntity user;
+
+	@BeforeEach
+	void beforeEachTest() {
+		user = testEntityManager.persistAndFlush(UserEntitiesFactory.getUserUserEntity());
+	}
+
 	@Nested
 	class FindUserTest {
-
-		private UserEntity user;
-
-		@BeforeEach
-		void beforeEachTest() {
-			user = UserEntitiesFactory.getAdminUserEntity();
-
-			testEntityManager.persistAndFlush(user);
-		}
-
-		@AfterEach
-		void afterEachTest() {
-			testEntityManager.remove(user);
-		}
 
 		@Test
 		void testExistsById() {
@@ -88,25 +82,32 @@ class UsersRepositoryTest extends AbstractBaseTest {
 
 		@Test
 		void testSaveUser() {
-			var user = UserEntitiesFactory.getGuestUserEntity();
-
-			testEntityManager.persistAndFlush(user);
+			var user = testEntityManager.persistAndFlush(UserEntitiesFactory.getAdminUserEntity());
 
 			Assertions.assertThat(userRepository.existsById(user.getUserId())).isTrue();
 		}
 	}
 
 	@Nested
-	class RemoveUser {
+	class UpdateUser {
 
-		private UserEntity user;
+		@Test
+		void testUpdateUser() {
+			var newUser = userRepository.findById(user.getUserId())
+				.orElseThrow(() -> new UserNotFoundException(user.getUserId()));
 
-		@BeforeEach
-		void beforeEachTest() {
-			user = UserEntitiesFactory.getUserUserEntity();
+			newUser.setRole(new RoleEntity(Role.GUEST));
+			newUser.setUsername("updatedUsername");
+			newUser.setFirstname("updatedFirstname");
+			newUser.setLastname("updatedLastname");
 
-			testEntityManager.persistAndFlush(user);
+			UserEntity updatedUser = userRepository.save(newUser);
+			Assertions.assertThat(updatedUser).usingRecursiveComparison().isEqualTo(newUser);
 		}
+	}
+
+	@Nested
+	class RemoveUser {
 
 		@Test
 		void testRemoveUser() {
@@ -118,13 +119,6 @@ class UsersRepositoryTest extends AbstractBaseTest {
 		@Test
 		void testRemoveUserById() {
 			userRepository.deleteUserEntityByUserId(user.getUserId());
-
-			Assertions.assertThat(userRepository.existsById(user.getUserId())).isFalse();
-		}
-
-		@Test
-		void testRemoveUserByUsername() {
-			userRepository.deleteUsersEntityByUsername(user.getUsername());
 
 			Assertions.assertThat(userRepository.existsById(user.getUserId())).isFalse();
 		}

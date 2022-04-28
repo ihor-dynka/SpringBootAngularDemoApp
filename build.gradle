@@ -25,19 +25,41 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
-    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.0.1'
+    testImplementation 'io.rest-assured:rest-assured:5.0.1'
     testImplementation 'io.rest-assured:xml-path:5.0.1'
-    runtimeOnly group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-    runtimeOnly group: 'com.h2database', name: 'h2', version: '2.1.212'
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.7'
-    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.28'
+    runtimeOnly 'com.h2database:h2:2.1.212'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+    implementation 'org.modelmapper:modelmapper:3.1.0'
 }
 
 tasks.named('test') {
+
     useJUnitPlatform()
+
+    filter {
+        includeTestsMatching  '*.unit_test.*'
+    }
+
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED"
+    }
 
     finalizedBy jacocoTestReport
 }
+
+task integrationTest(type: Test){
+    useJUnitPlatform()
+
+    filter {
+        includeTestsMatching  '*.integration_test.*'
+    }
+
+    testLogging.showStandardStreams = true
+}
+
+project.tasks.integrationTest.dependsOn(test)
+project.tasks.check.dependsOn(integrationTest)
 
 jacocoTestReport {
     reports {

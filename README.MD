@@ -1,9 +1,16 @@
 ###Build Docker Image
 - `gradle clean build bootBuildImage --imageName=spring-boot-docker:latest`
 
-###Start App with DB in Docker containers
+It includes:
+- compilation
+- unit test run
+- integration test run
+- building the app
+- building the docker image
+
+###Start and stop App with DB in Docker containers
 - `docker-compose up`
-- `docker-compose up --build` to rebuild app image
+- `docker-compose down -v`
 
 ###Swagger UI
 - `http://localhost:8080/swagger-ui/index.html#/`
