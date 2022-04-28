@@ -5,6 +5,7 @@ import com.spring.demo.enums.Role;
 import com.spring.demo.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Get user details by its ID")
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = USER_ID, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public UserDto getUserById(@Valid @PathVariable int userId) {

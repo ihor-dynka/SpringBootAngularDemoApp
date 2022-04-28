@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.spring'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -22,9 +22,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.7'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.7'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     testImplementation 'io.rest-assured:rest-assured:5.0.1'
     testImplementation 'io.rest-assured:xml-path:5.0.1'
     runtimeOnly 'mysql:mysql-connector-java:8.0.28'
@@ -38,7 +39,7 @@ tasks.named('test') {
     useJUnitPlatform()
 
     filter {
-        includeTestsMatching  '*.unit_test.*'
+        includeTestsMatching '*.unit_test.*'
     }
 
     testLogging {
@@ -48,11 +49,11 @@ tasks.named('test') {
     finalizedBy jacocoTestReport
 }
 
-task integrationTest(type: Test){
+task integrationTest(type: Test) {
     useJUnitPlatform()
 
     filter {
-        includeTestsMatching  '*.integration_test.*'
+        includeTestsMatching '*.integration_test.*'
     }
 
     testLogging.showStandardStreams = true
