@@ -1,33 +1,33 @@
 package com.spring.demo.unit_test.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.demo.enums.Role;
+import com.spring.demo.controller.UsersController;
 import com.spring.demo.exceptions.UserNotFoundException;
 import com.spring.demo.security.AuthService;
 import com.spring.demo.services.UserService;
 import com.spring.demo.test_data.UserDtoFactory;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Disabled
-@WebMvcTest
+@WebMvcTest(UsersController.class)
+@WithMockUser(username = "admin", password = "P@ssw0rd", roles = "ADMIN")
 public class UsersControllerTest {
 
 	@Autowired
@@ -39,20 +39,15 @@ public class UsersControllerTest {
 	@MockBean
 	private AuthService userDetailsService;
 
-	@BeforeEach
-	void setUp() {
-		given(userDetailsService.loadUserByUsername(anyString()))
-			.willReturn(new User("admin", "P@ssw0rd", List.of(new SimpleGrantedAuthority(Role.ADMIN.getName()))));
-	}
-
 	@Nested
 	class GetUser {
+
 		@Test
 		void GET_Users_UserId_200_OK() throws Exception {
 			var userId = RandomUtils.nextInt();
 
 			var expectedUser = UserDtoFactory.getUser();
-			given(userService.getUserById(anyInt())).willReturn(expectedUser.setId(anyInt()));
+			when(userService.getUserById(anyInt())).thenReturn(expectedUser.setId(anyInt()));
 
 			mockMvc.perform(
 					get("/v1/api/users/" + userId)

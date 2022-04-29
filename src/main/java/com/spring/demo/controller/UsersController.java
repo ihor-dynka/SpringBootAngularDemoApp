@@ -29,7 +29,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Get user details by its ID")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	@GetMapping(value = USER_ID, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public UserDto getUserById(@Valid @PathVariable int userId) {
@@ -37,6 +37,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Get all users")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	@GetMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<UserDto> getAllUsers() {
@@ -44,6 +45,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Get all user roles")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	@GetMapping(value = ROLE_ROLE, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<UserDto> getUsersByRole(@Valid @PathVariable String role) {
@@ -51,6 +53,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Create new user")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserDto createNewUser(@Valid @RequestBody UserDto userDto) {
@@ -58,6 +61,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Update user details")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value = USER_ID, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public UserDto updateUser(@Valid @PathVariable int userId, @Valid @RequestBody UserDto userDto) {
@@ -65,6 +69,7 @@ public class UsersController {
 	}
 
 	@Operation(summary = "Delete user by its id")
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value = USER_ID, produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteUserById(@Valid @PathVariable int userId) {

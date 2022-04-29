@@ -2,6 +2,7 @@ package com.spring.demo.persistence.entities;
 
 import com.spring.demo.enums.Role;
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class RoleEntity {
 
 	@Id

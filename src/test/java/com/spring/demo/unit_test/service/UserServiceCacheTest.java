@@ -5,7 +5,6 @@ import com.spring.demo.persistence.repositories.UserRepository;
 import com.spring.demo.services.UserService;
 import com.spring.demo.test_data.UserEntitiesFactory;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +18,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
-@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class UserServiceCacheTest {
 

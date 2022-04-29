@@ -29,6 +29,7 @@ public class RolesRepositoryTest extends AbstractBaseTest {
 	@Test
 	void testRemoveRole() {
 		var role = testEntityManager.persistAndFlush(new RoleEntity(Role.TEST_USER));
+
 		testEntityManager.remove(role);
 
 		Assertions.assertThat(rolesRepository.existsById(role.getRoleId())).isFalse();
@@ -37,10 +38,10 @@ public class RolesRepositoryTest extends AbstractBaseTest {
 	@Test
 	void testFindAllRoles() {
 		var roleEntityList = rolesRepository.findAll();
-		var testUserRole = testEntityManager.persistAndFlush(new RoleEntity(Role.TEST_USER));
+		var role = testEntityManager.persistAndFlush(new RoleEntity(Role.TEST_USER));
 
 		Assertions.assertThat(rolesRepository.findAll())
 			.hasSize(roleEntityList.size() + 1)
-			.contains(testUserRole);
+			.contains(role);
 	}
 }

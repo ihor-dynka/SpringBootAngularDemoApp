@@ -1,6 +1,5 @@
 package com.spring.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.demo.enums.Role;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -21,7 +20,6 @@ public class UserDto implements Copyable<UserDto> {
 	private Role role;
 	@NotBlank
 	private String username;
-	@JsonIgnore
 	@NotBlank
 	private String password;
 	@NotBlank

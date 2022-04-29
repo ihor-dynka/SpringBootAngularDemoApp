@@ -3,6 +3,8 @@ package com.spring.demo.integration_test;
 import com.spring.demo.dto.UserDto;
 import com.spring.demo.test_data.UserDtoFactory;
 import io.restassured.RestAssured;
+import io.restassured.authentication.BasicAuthScheme;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
@@ -10,13 +12,13 @@ import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
-@Disabled
+import java.util.List;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UsersControllerTest {
 
@@ -28,10 +30,18 @@ public class UsersControllerTest {
 
 	@BeforeEach
 	void beforeEachTest() {
-		RestAssured.baseURI = BASE_URI;
-		RestAssured.basePath = BASE_PATH;
-		RestAssured.port = port;
-		RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
+		var auth = new BasicAuthScheme();
+		auth.setUserName("admin");
+		auth.setPassword("P@ssw0rd");
+
+		RestAssured.requestSpecification = new RequestSpecBuilder()
+			.setBaseUri(BASE_URI)
+			.setBasePath(BASE_PATH)
+			.setPort(port)
+			.addFilters(List.of(new RequestLoggingFilter(), new ResponseLoggingFilter()))
+			.setContentType(ContentType.JSON)
+			.setAuth(auth)
+			.build();
 	}
 
 	@AfterEach
@@ -44,7 +54,6 @@ public class UsersControllerTest {
 		var userId = 1;
 
 		UserDto user = RestAssured.given()
-			.contentType(ContentType.JSON)
 			.when()
 			.get(String.valueOf(userId))
 			.then()
@@ -103,8 +112,6 @@ public class UsersControllerTest {
 	private Response postUsersUser(UserDto user) {
 		return RestAssured
 			.given()
-			.contentType(ContentType.JSON)
-			.when()
 			.body(user)
 			.post();
 	}
@@ -112,8 +119,6 @@ public class UsersControllerTest {
 	private Response putUsersUserId(int userId, UserDto user) {
 		return RestAssured
 			.given()
-			.contentType(ContentType.JSON)
-			.when()
 			.body(user)
 			.put(String.valueOf(userId));
 	}
