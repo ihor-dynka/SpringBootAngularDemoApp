@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 permissions:
   contents: read
@@ -28,7 +28,15 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Build with Gradle
+    - name: Build and run Tests with Gradle
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
         arguments: clean check
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Upload test coverage report
+        path: build/jacoco/index.html
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Upload test result
+        path: build/test-results
