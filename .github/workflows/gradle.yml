@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Gradle check
 
 on:
   pull_request:
@@ -19,11 +19,15 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: clean check
-        build-root-directory: backend
+    - name: gradle chmod
+      run: chmox +X ./backend/gradlew
+    - name: gradle clean check
+      run: ./backend/gradlew clean check
+#    - name: Build with Gradle
+#      uses: gradle/gradle-build-action@v2
+#      with:
+#        arguments: clean check
+#        build-root-directory: backend
 #    - uses: actions/upload-artifact@v3
 #      with:
 #        name: Upload test coverage report
