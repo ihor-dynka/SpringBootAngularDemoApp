@@ -21,8 +21,10 @@ jobs:
         distribution: 'temurin'
     - name: gradle chmod
       run: chmod +x ./backend/gradlew
+    - name: go to backend directory
+      run: cd backend
     - name: gradle clean check
-      run: ./backend/gradlew clean check
+      run: ./gradlew clean check
 #    - name: Build with Gradle
 #      uses: gradle/gradle-build-action@v2
 #      with:
