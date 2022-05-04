@@ -6,6 +6,8 @@ on:
 
 permissions:
   contents: read
+  checks: write
+  pull-requests: write
 
 jobs:
   build:
@@ -22,8 +24,15 @@ jobs:
 
     - name: Build with Gradle
       run: cd backend && chmod +x ./gradlew && ./gradlew build
+
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
         jacoco-csv-file: backend/build/reports/jacoco/test/jacocoTestReport.csv
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "build/test-results/**/*.xml"
