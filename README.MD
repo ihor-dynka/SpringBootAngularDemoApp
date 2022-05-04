@@ -1,7 +1,7 @@
 ##Backend
 ###Build Docker Image
 - `cd backend`
-- `gradlew clean build bootBuildImage --imageName=spring-boot-docker:latest`
+- `./gradlew clean build bootBuildImage --imageName=spring-boot-docker:latest`
 
 It includes:
 - compilation
