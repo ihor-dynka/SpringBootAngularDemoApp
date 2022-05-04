@@ -7,7 +7,9 @@ plugins {
 
 group = 'com.spring'
 version = '1.0.0-SNAPSHOT'
-sourceCompatibility = '11'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 configurations {
     compileOnly {
@@ -63,11 +65,15 @@ task integrationTest(type: Test) {
 project.tasks.integrationTest.dependsOn(test)
 project.tasks.check.dependsOn(integrationTest)
 
+jacoco {
+    reportsDirectory = layout.buildDirectory.dir('reports/jacoco')
+}
+
 jacocoTestReport {
     reports {
+        html.required = false
         xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir('/jacoco')
+        csv.required = true
     }
 }
 
