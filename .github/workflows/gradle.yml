@@ -21,10 +21,7 @@ jobs:
         distribution: 'adopt'
 
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v2.1.5
-      with:
-        arguments: clean check
-        build-root-directory: backend
+      run: cd /backend && ./gradlew build
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
