@@ -20,7 +20,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: gradle chmod
-      run: chmox +X ./backend/gradlew
+      run: chmod +X ./backend/gradlew
     - name: gradle clean check
       run: ./backend/gradlew clean check
 #    - name: Build with Gradle
