@@ -1,4 +1,4 @@
-name: Gradle Check
+name: Java CI with Gradle
 
 on:
   pull_request:
@@ -9,7 +9,9 @@ permissions:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -18,4 +20,15 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Build with Gradle
-      run: ./backend/gradlew clean check
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: clean check
+        build-root-directory: backend
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: Upload test coverage report
+#        path: build/jacoco/index.html
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: Upload test result
+#        path: build/test-results
