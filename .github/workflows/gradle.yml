@@ -18,4 +18,4 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Build with Gradle
-      run: ./gradlew check
+      run: ./backend/gradlew clean check
