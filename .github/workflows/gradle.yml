@@ -25,11 +25,3 @@ jobs:
       with:
         arguments: clean check
         build-root-directory: backend
-#    - uses: actions/upload-artifact@v3
-#      with:
-#        name: Upload test coverage report
-#        path: build/jacoco/index.html
-#    - uses: actions/upload-artifact@v3
-#      with:
-#        name: Upload test result
-#        path: build/test-results
